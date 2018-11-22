@@ -26,6 +26,8 @@ class TestThroughput(object):
 
     @responses.activate
     def test_with_three_interfaces(self, statefile):
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1, ethernet1/2, ethernet1/3'
         interfaces = []
         for interface in self.interface.split(','):
@@ -100,6 +102,8 @@ class TestThroughput(object):
     def test_with_one_interface(self, statefile):
         file1 = 'throughput1.xml'
 
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1'
         interfaces = []
         for interface in self.interface.split(','):
@@ -175,10 +179,14 @@ class TestThroughput(object):
         pa_1 = self.__class__()
         pa_1.host = "192.168.0.1"
         pa_1.interface = "ethernet1/1"
+        pa_1.warn = 8000000000
+        pa_1.crit = 9000000000
 
         pa_2 = self.__class__()
         pa_2.host = "192.168.0.2"
         pa_2.interface = "ethernet1/1"
+        pa_2.warn = 8000000000
+        pa_2.crit = 9000000000
 
         from nagiosplugin import Cookie
 
@@ -217,6 +225,8 @@ class TestThroughput(object):
     def test_new_input_less_than_old(self, statefile):
         file1 = 'throughput1.xml'
 
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1'
         interfaces = []
         for interface in self.interface.split(','):
@@ -263,6 +273,8 @@ class TestThroughput(object):
     def test_new_output_less_than_old(self, statefile):
         file1 = 'throughput1.xml'
 
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1'
         interfaces = []
         for interface in self.interface.split(','):
@@ -318,6 +330,8 @@ class TestThroughput(object):
     def test_same_time(self, statefile):
         file1 = 'throughput1.xml'
 
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1'
         interfaces = []
         for interface in self.interface.split(','):
@@ -367,6 +381,8 @@ class TestThroughput(object):
     def test_api_failed(self, statefile):
         file1 = 'throughput1.xml'
 
+        self.warn = 8000000000
+        self.crit = 9000000000
         self.interface = 'ethernet1/1'
         interfaces = []
         for interface in self.interface.split(','):

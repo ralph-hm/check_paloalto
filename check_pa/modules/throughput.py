@@ -25,6 +25,23 @@ def get_time():
     """
     return time.time()  # pragma: no cover
 
+def get_all(host, token):
+    """
+    Get all interfaces name.
+
+    :return: array of interface names
+    """
+    interfaces = []
+    cmd = '<show><counter><interface>all</interface></counter></show>'
+    xml_obj = XMLReader(host, token, cmd)
+    soup =  xml_obj.read()
+    ifnet = soup.find('ifnet')
+
+    for item in ifnet.find_all('entry'):
+        ifname = Finder.find_item(item, 'name')
+        interfaces.append(str(ifname))
+
+    return interfaces
 
 def create_check(args):
     """
@@ -33,13 +50,15 @@ def create_check(args):
     :return: the throughput check.
     """
     interfaces = str(args.interface).split(",")
+    if interfaces[0] == 'all':
+        interfaces= get_all(args.host, args.token)
     check = np.Check()
     for interface in interfaces:
         check.add(Throughput(args.host, args.token, interface))
     for interface in interfaces:
-        check.add(np.ScalarContext('in_bps_' + interface))
+        check.add(np.ScalarContext('in_bps_' + interface, args.warn, args.crit))
     for interface in interfaces:
-        check.add(np.ScalarContext('out_bps_' + interface))
+        check.add(np.ScalarContext('out_bps_' + interface, args.warn, args.crit))
     check.add(NetworkSummary())
     return check
 
@@ -79,9 +98,13 @@ class Throughput(np.Resource):
         soup = self.xml_obj.read()
         ifnet = soup.find('ifnet')
 
-        for item in ifnet.find_all('entry'):
-            api_inbytes = Finder.find_item(item, 'ibytes')
-            api_outbytes = Finder.find_item(item, 'obytes')
+        try:
+            for item in ifnet.find_all('entry'):
+                api_inbytes = Finder.find_item(item, 'ibytes')
+                api_outbytes = Finder.find_item(item, 'obytes')
+        except:
+            api_inbytes = "0"
+            api_outbytes = "0"
 
         _log.debug('Path to statefile: %r' % get_statefile_path())
         with np.Cookie(get_statefile_path()) as cookie:
@@ -137,3 +160,4 @@ class NetworkSummary(np.Summary):
                 bit_out += result.metric.value
         return 'Input is %s Mb/s - Output is %s Mb/s' % (
             str(Utils.to_mega(bit_in)), str(Utils.to_mega(bit_out)))
+
