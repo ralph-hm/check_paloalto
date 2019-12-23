@@ -150,6 +150,7 @@ usage::
       -h, --help            show this help message and exit
       -i [INTERFACE], --interface [INTERFACE]
                             PA interface name, seperate by comma.
+                            if interface name is 'all', every interface throughput will be requested
 
 example::
 
@@ -157,6 +158,9 @@ example::
     $ THROUGHPUT OK - Input is 5.74 Mb/s - Output is 11.81 Mb/s | 'in_bps_ethernet1/1'=5743432.0;;;0 'out_bps_ethernet1/1'=11807524.0;;;0
 
     $ check_paloalto -H HOST -T TOKEN throughput -i ethernet1/1,ethernet1/2
+    $ THROUGHPUT OK - Input is 44.12 Mb/s - Output is 24.59 Mb/s | 'in_bps_ethernet1/1'=5895616.0;;;0 'in_bps_ethernet1/2'=38225768.0;;;0 'out_bps_ethernet1/1'=15926620.0;;;0 'out_bps_ethernet1/2'=8661100.0;;;0
+
+    $ check_paloalto -H HOST -T TOKEN throughput -i all
     $ THROUGHPUT OK - Input is 44.12 Mb/s - Output is 24.59 Mb/s | 'in_bps_ethernet1/1'=5895616.0;;;0 'in_bps_ethernet1/2'=38225768.0;;;0 'out_bps_ethernet1/1'=15926620.0;;;0 'out_bps_ethernet1/2'=8661100.0;;;0
 
 To get all available names of your interfaces, please have a look at

@@ -152,6 +152,14 @@ def parse_args(args):
         nargs='?',
         required=True,
     )
+    parser_throughput.add_argument(
+        '-w', '--warn',
+        metavar='WARN', type=int, default=8000000000,
+        help='Warning if throughput is greater. In bps (default: %(default)s)')
+    parser_throughput.add_argument(
+        '-c', '--crit',
+        metavar='CRIT', type=int, default=9000000000,
+        help='Critical if throughput is greater. In bps (default: %(default)s)')
     parser_throughput.set_defaults(func=throughput)
 
     return parser.parse_args(args)

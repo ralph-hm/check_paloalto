@@ -129,3 +129,9 @@ crashlytics-build.properties
 fabric.properties
 
 *.log
+
+# Virtualenv
+include/
+local/
+share/
+.cache/
